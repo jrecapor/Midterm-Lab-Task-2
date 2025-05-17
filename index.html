@@ -1,1 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Midterm Lab Task 2 - Data Cleaning and Preparation</title>
+    <style>
+        /* General styles */
+        body {
+            background-color: #121212;
+            background-image: url('https://i.gifer.com/5ARz.gif');  /* Update with a valid image URL */
+            background-size: cover;
+            color: #e0e0e0;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-position: center;
+            background-attachment: fixed;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
 
+        header {
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #00bcd4;
+            text-shadow: 0 0 20px rgba(0, 188, 212, 0.7);
+            margin: 0;
+        }
+
+        nav {
+            background-color: rgba(30, 30, 30, 0.9);
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        nav a {
+            color: #00bcd4;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 10px 15px;
+            margin: 0 15px;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background-color: rgba(0, 188, 212, 0.5);
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.7);
+        }
+
+        section {
+            padding: 50px;
+        }
+
+        .box {
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0, 188, 212, 0.5);
+            margin-bottom: 40px;
+        }
+
+        footer {
+            background-color: rgba(30, 30, 30, 0.9);
+            color: #00bcd4;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 1.1em;
+        }
+
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 90%;
+            border-radius: 12px;
+            box-shadow: 0 0 20px #00ccff;
+        }
+
+        h2, h3 {
+            color: #00bcd4;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .step {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Midterm Lab Task 2 - Data Cleaning and Preparation</h1>
+</header>
+
+<nav>
+    <a href="#process">Step-by-Step Process</a>
+    <a href="#screenshots">Screenshots</a>
+</nav>
+
+<!-- Step-by-Step Process Section -->
+<section id="process">
+    <div class="box">
+        <h2>📝 Step-by-Step Process</h2>
+        <div class="step">
+            <h3>Step 1: Download and Load Data</h3>
+            <ul>
+                <li>Download the dataset (Uncleaned_DS_jobs.csv)</li>
+                <li>Open Excel</li>
+                <li>Go to Data → New Query → Open File → Text/CSV</li>
+                <li>Click Load and then Edit using Power Query Editor</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Duplicate Raw Data</h3>
+            <ul>
+                <li>Right-click the dataset in the Queries pane</li>
+                <li>Select Duplicate</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Clean Salary Data</h3>
+            <ul>
+                <li>Select the Salary Estimate column</li>
+                <li>Go to Transform Menu → Extract → Text Before Delimiter</li>
+                <li>Type "(" and click OK</li>
+                <li>Create two new columns: Min Salary and Max Salary</li>
+                <li>Select Salary Estimate column → Add Column Menu → Column from Examples → From Selections</li>
+                <li>Type the first min salary value and press Enter (all rows will auto-fill)</li>
+                <li>Rename the column to "Min Sal"</li>
+                <li>Repeat the process for Max Salary</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 4: Add Role Type Column</h3>
+            <ul>
+                <li>Go to Add Column Menu → Custom Column</li>
+                <li>Rename the column to "Role Type"</li>
+                <li>Use this logic:</li>
+                <ul>
+                    <li>If Job Title contains "Data Scientist" → Assign "Data Scientist"</li>
+                    <li>If Job Title contains "Data Analyst" → Assign "Data Analyst"</li>
+                    <li>If Job Title contains "Data Engineer" → Assign "Data Engineer"</li>
+                    <li>If Job Title contains "Machine Learning" → Assign "Machine Learning Engineer"</li>
+                    <li>Otherwise, assign "Other"</li>
+                </ul>
+                <li>Change the column type to Text</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 5: Split Location Column</h3>
+            <ul>
+                <li>Select the Location column</li>
+                <li>Add a Custom Column with corrections:</li>
+                <ul>
+                    <li>If Location = "New Jersey" → Assign ", NJ"</li>
+                    <li>If Location = "Remote" or "United States" → Assign ", Other"</li>
+                    <li>If Location = "Texas" → Assign ", TX"</li>
+                    <li>If Location = "California" → Assign ", CA"</li>
+                </ul>
+                <li>Click OK, then select the new column</li>
+                <li>Go to Transform → Split Column → By Delimiter (comma ",")</li>
+                <li>Click OK</li>
+                <li>Rename the second split column to "State Abbreviations"</li>
+                <li>Check and replace incorrect values (e.g., "Anne Rundell" → "MA")</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 6: Split Size Column</h3>
+            <ul>
+                <li>Create two new columns: MinCompanySize and MaxCompanySize</li>
+                <li>Use the same method as Salary Estimate to split values</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 7: Handle Negative Values</h3>
+            <ul>
+                <li>Filter out -1s from the Competitors column</li>
+                <li>Filter out 0s from the Revenues column</li>
+                <li>Remove -1s from the Industry column</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 8: Clean Company Names</h3>
+            <ul>
+                <li>Remove any extra characters or ratings after company names</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 9: Copy Cleaning Steps as Proof</h3>
+            <ul>
+                <li>Go to Home Menu → Click Advanced Editor</li>
+                <li>Copy and save the code in your portfolio</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 10: Reshape and Group Data</h3>
+            <ul>
+                <li>Group by Role Type</li>
+                <ul>
+                    <li>Duplicate the raw data → Rename it as "Sal By Role Type dup"</li>
+                    <li>Select only Role Type, Min Salary, and Max Salary columns</li>
+                    <li>Change Min and Max Salary type to currency</li>
+                    <li>Multiply values by 1000</li>
+                    <li>Group rows by Role Type and get the average for Min and Max Salary</li>
+                </ul>
+                <li>Group by Company Size</li>
+                <ul>
+                    <li>Create a reference of raw data → Rename it as "Sal By Role Size ref"</li>
+                    <li>Select only Size, Min Salary, and Max Salary columns</li>
+                    <li>Change Min and Max Salary type to currency</li>
+                    <li>Multiply values by 1000</li>
+                    <li>Group rows by Size and get the average for Min and Max Salary</li>
+                </ul>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 11: Merge State Mapping</h3>
+            <ul>
+                <li>Click Unclean DS Jobs</li>
+                <li>Right-click in the Queries pane → New Query → Open Workbook State Mapping</li>
+                <li>Select the columns and click OK</li>
+                <li>Select Uncleaned DS Jobs query</li>
+                <li>Choose the State Abbreviation column in both queries</li>
+                <li>Click Merge → Click OK</li>
+                <li>Rename the merged column as "State Full Name"</li>
+                <li>Remove nulls and blanks</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 12: Group by State</h3>
+            <ul>
+                <li>Create a reference of raw data → Rename it as "Sal By State ref"</li>
+                <li>Select only State Full Name, Min Salary, and Max Salary columns</li>
+                <li>Change Min and Max Salary type to currency</li>
+                <li>Multiply values by 1000</li>
+                <li>Group rows by State Full Name and get the average for Min and Max Salary</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h3>Step 13: View Query Dependencies</h3>
+            <ul>
+                <li>Go to View Menu → Click Dependencies</li>
+                <li>Check if all queries are correctly linked</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Screenshots Section -->
+<section id="screenshots">
+    <div class="box">
+        <h2>📸 Screenshots of the Table Transformation Process</h2>
+        <h3>Before Data Cleaning</h3>
+        <img src="https://github.com/user-attachments/assets/38ea140c-bb3b-44c1-b2cb-a25601ea8467" alt="Before Data Cleaning">
+        
+        <h3>Advanced Editor</h3>
+        <img src="https://github.com/user-attachments/assets/363e27b5-76d2-4561-8907-6718216a3d45" alt="Advanced Editor">
+        
+        <h3>After Data Cleaning</h3>
+        <img src="https://github.com/user-attachments/assets/dd368a40-ad15-4159-a5dd-3ab372efe33d" alt="After Data Cleaning">
+        
+        <h3>Salary by Role Type</h3>
+        <img src="https://github.com/user-attachments/assets/4a2b5298-8a0b-4440-8e83-de4f0810d89d" alt="Salary by Role Type">
+        
+        <h3>Salary by Role Size</h3>
+        <img src="https://github.com/user-attachments/assets/f193001b-6da3-46fa-aa36-877f20cefc81" alt="Salary by Role Size">
+        
+        <h3>Salary by State</h3>
+        <img src="https://github.com/user-attachments/assets/d6e69440-32be-4cbf-af2c-5d8a99dfdcbc" alt="Salary by State">
+        
+        <h3>State Mapping</h3>
+        <img src="https://github.com/user-attachments/assets/8c402690-1e7a-4253-899d-e0f74b6e302a" alt="State Mapping">
+        
+        <h3>Query Dependencies</h3>
+        <img src="https://github.com/user-attachments/assets/e964092b-b535-4357-86aa-13795196b172" alt="Query Dependencies">
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>© 2025 John Paul A. Recapor. All rights reserved.</p>
+    <a href="https://github.com/jrecapor/EDM-John-Paul/tree/main/Midterm%20Task%202" target="_blank" style="color: #00bcd4;">View Midterm Lab Task 2 on GitHub</a>
+</footer>
+
+</body>
+</html>
